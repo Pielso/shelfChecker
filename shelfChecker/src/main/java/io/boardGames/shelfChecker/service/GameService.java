@@ -4,7 +4,6 @@ import io.boardGames.shelfChecker.entity.Game;
 import io.boardGames.shelfChecker.repository.GameRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
-import io.boardGames.shelfChecker.DTO.GameDTO;
 
 @Service
 public class GameService {
@@ -52,6 +51,7 @@ public class GameService {
         return tempList;
     }
 
+    // Feature för att filtrera spelen på antal spelare.
     public List <Game> filterGames(int players){
         ArrayList <Game> games = new ArrayList<>();
         for (Game game: gameRepository.findAll()){
@@ -61,6 +61,8 @@ public class GameService {
         }
         return games;
     }
+
+    // Ingen feature direkt, men för att bygga ett objekt som drar data ur flera tabeller i sql.
     public BoardgameDTO putTogetherBoardGame(){
         BoardgameDTO x1822 = new BoardgameDTO();
         x1822.setGamename(getGameById(1).getGamename());

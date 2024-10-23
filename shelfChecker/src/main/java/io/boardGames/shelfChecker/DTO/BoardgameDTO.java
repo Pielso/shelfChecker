@@ -5,7 +5,6 @@ import io.boardGames.shelfChecker.entity.Mechanism;
 import java.util.ArrayList;
 import java.util.List;
 
-//
 public class BoardgameDTO extends Game {
     public List <Designer> designedBy = new ArrayList<>();
     public List <Mechanism> gameMechanisms = new ArrayList<>();

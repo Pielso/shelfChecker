@@ -28,27 +28,23 @@ public class GameController {
         this.mechanismService = mechanismService;
     }
 
-    // Metoder
+    // URL
     @GetMapping ("/{id}")
     public Game getGameById(@PathVariable("id") int gameId){
         return gameService.getGameById(gameId);
     }
-
     @GetMapping ("/all")
     public List<Game> listAllGames(){
         return gameService.getAllGames();
     }
-
     @GetMapping ("/search/{searchword}")
     public ArrayList <Game> sortListOfGames(@PathVariable ("searchword") String searchWord){
         return gameService.sortListOfGames(searchWord);
     }
-
     @GetMapping ("/filtergames/{players}")
     public List<Game> filterGames(@PathVariable("players") int players){
         return gameService.filterGames(players);
     }
-
     @GetMapping ("/boardgame")
     public BoardgameDTO tryBoardGame(){
         return gameService.putTogetherBoardGame();
