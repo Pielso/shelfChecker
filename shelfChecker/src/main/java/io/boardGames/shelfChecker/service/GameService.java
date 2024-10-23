@@ -1,10 +1,10 @@
 package io.boardGames.shelfChecker.service;
 import io.boardGames.shelfChecker.DTO.BoardgameDTO;
 import io.boardGames.shelfChecker.entity.Game;
-import io.boardGames.shelfChecker.repository.DesignerRepository;
 import io.boardGames.shelfChecker.repository.GameRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import io.boardGames.shelfChecker.DTO.GameDTO;
 
 @Service
 public class GameService {
@@ -19,35 +19,33 @@ public class GameService {
         this.mechanismService = mechanismService;
     }
 
-    // Metoder
+    // Metoder för CRUD.
     public void createGame(Game game){
         gameRepository.save(game);
     }
+    public Game getGameById(int id){
+        return gameRepository.findById(id).get();
+    }
+    public List <Game> getAllGames(){
+        return gameRepository.findAll();
+    }
     public void updateGame(Game newGame){
-        Game oldGame = gameRepository.findById(newGame.getId()).get();
+        Game oldGame = getGameById(newGame.getId());
         oldGame.setId(newGame.getId());
         oldGame.setGamename(newGame.getGamename());
         oldGame.setMinplayers(newGame.getMinplayers());
         oldGame.setMaxplayers(newGame.getMaxplayers());
         gameRepository.save(oldGame);
     }
-
-    public Game getGameById(int id){
-        return gameRepository.findById(id).get();
-    }
-
-    public List <Game> getAllGames(){
-        return gameRepository.findAll();
-    }
-
     public void deleteById(int id){
         gameRepository.delete(getGameById(id));
     }
 
-    public ArrayList <Game> sortListOfGames(){
+    // Feature för att söka efter ett spel i hyllan.
+    public ArrayList <Game> sortListOfGames(String searchWord){
         ArrayList <Game> tempList = new ArrayList<>();
         for (Game game: gameRepository.findAll()){
-            if (game.getGamename().equals("1880")){
+            if (game.getGamename().toUpperCase().contains(searchWord.toUpperCase())){
                 tempList.add(game);
             }
         }
@@ -63,7 +61,6 @@ public class GameService {
         }
         return games;
     }
-
     public BoardgameDTO putTogetherBoardGame(){
         BoardgameDTO x1822 = new BoardgameDTO();
         x1822.setGamename(getGameById(1).getGamename());

@@ -9,13 +9,13 @@ import io.boardGames.shelfChecker.service.GameService;
 import io.boardGames.shelfChecker.service.MechanismService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping ("/games")
 public class GameController {
     GameService gameService;
     DesignerService designerService;
@@ -29,19 +29,19 @@ public class GameController {
     }
 
     // Metoder
-    @GetMapping ("/games/{id}")
+    @GetMapping ("/{id}")
     public Game getGameById(@PathVariable("id") int gameId){
         return gameService.getGameById(gameId);
     }
 
-    @GetMapping ("/listofgames")
+    @GetMapping ("/all")
     public List<Game> listAllGames(){
         return gameService.getAllGames();
     }
 
-    @GetMapping ("/sortlistofgames")
-    public ArrayList <Game> sortListOfGames(){
-        return gameService.sortListOfGames();
+    @GetMapping ("/search/{searchword}")
+    public ArrayList <Game> sortListOfGames(@PathVariable ("searchword") String searchWord){
+        return gameService.sortListOfGames(searchWord);
     }
 
     @GetMapping ("/filtergames/{players}")
@@ -53,7 +53,7 @@ public class GameController {
     public BoardgameDTO tryBoardGame(){
         return gameService.putTogetherBoardGame();
     }
-    @PostMapping ("/games")
+    @PostMapping ("/newgame")
     public ResponseEntity<String> createGame(@RequestBody Game game){
         try {
             gameService.createGame(game);
@@ -62,8 +62,6 @@ public class GameController {
             return  new ResponseEntity<>("There was an error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
     @PutMapping ("/update")
     public ResponseEntity<String> updateGame(@RequestBody Game game){
         try {
@@ -74,8 +72,7 @@ public class GameController {
 
         }
     }
-        
-    @DeleteMapping ("/games/{id}")
+    @DeleteMapping ("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable int id){
         try {
             gameService.deleteById(id);
